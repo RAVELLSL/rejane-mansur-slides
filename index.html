@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apresentação Pessoal - Full Screen Integrada</title>
+  <style>
+    /* Reset e Estilos Globais */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff;
+      overflow: hidden;
+      line-height: 1.6;
+    }
+    
+    main {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+    }
+    
+    section {
+      height: 100vh; /* Cada slide ocupa a tela inteira */
+      width: 100%;
+      background: linear-gradient(to right, #fbc2eb, #a6ede9);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 50, 0.1);
+      border: 1px solid #df8fe0;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+    
+    section.active {
+      display: block;
+    }
+    
+    /* Slide 0: Capa da Apresentação */
+    .cover-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 60px;
+      gap: 40px;
+    }
+    
+    .cover-content {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cover-content h2,
+    .cover-content h4,
+    .cover-content p {
+      text-align: center;
+      margin-bottom: 15px;
+      max-width: 600px;
+    }
+    
+    .title {
+      font-size: 3em;
+      margin-bottom: 30px;
+      font-weight: 700;
+      color: #6A1B9A;
+      text-align: center;
+    }
+    
+    .cover-content h4 {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      font-weight: 500;
+      color: #333;
+    }
+    
+    .cover-content p {
+      font-size: 1.2em;
+      line-height: 1.4;
+      color: #444;
+    }
+    
+    .cover-illustration {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .cover-illustration img {
+      width: 100%;
+      height: auto;
+      max-width: 450px;
+    }
+    
+    /* Cabeçalho comum para slides (exceto a capa) – agora posicionado no canto inferior direito, com deslocamento para evitar sobreposição */
+    .slide-header {
+      position: absolute;
+      bottom: 10px; /* anteriormente 30px */
+      right: 10px;
+      text-align: right;
+      font-size: 0.8em;
+      color: #444;
+      z-index: 10;
+      line-height: 1.2;
+    }
+    
+    .slide-header .talk-title {
+      margin: 0;
+      font-weight: bold;
+    }
+    
+    .slide-header .speaker-name {
+      margin: 0;
+      font-size: 0.9em;
+    }
+    
+    /* Slide 1: Quem sou eu? */
+    .top-banner {
+      max-height: 50vh;
+      overflow: hidden;
+    }
+    
+    .top-banner img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+    
+    .content {
+  padding: 5px 10px 20px;
+}
+
+    
+    .info-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
+    
+    .info-box {
+      background-color: #fce3f8;
+      border-radius: 12px;
+      padding: 20px;
+      width: 220px;
+      box-shadow: 0 2px 8px rgba(0, 60, 120, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .info-box:hover {
+      transform: translateY(-5px);
+    }
+    
+    .icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      color: #9a2a8c;
+    }
+    
+    /* Slides 2 e 4: Minha vida profissional e Radiestesia Radiónica: origem e história */
+    .flex-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      padding: 40px 30px;
+      gap: 30px;
+    }
+    
+    .timeline {
+      flex: 1 1 500px;
+    }
+    
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 18px;
+      width: 2px;
+      height: 100%;
+      background: #df8fe0;
+    }
+    
+    .circle {
+      background-color: #ffe7f9;
+      color: #6A1B9A;
+      font-weight: bold;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      position: relative;
+      z-index: 1;
+      border: 2px solid #df8fe0;
+    }
+    
+    .timeline-text {
+      flex: 1;
+    }
+    
+    .timeline-text h4 {
+      margin: 0;
+      font-size: 1.1em;
+      color: #6A1B9A;
+    }
+    
+    .timeline-text p {
+      margin: 5px 0 0;
+      color: #5a2c57;
+      font-size: 0.95em;
+    }
+    
+    .illustration {
+      flex: 1 1 300px;
+      text-align: center;
+    }
+    
+    .illustration img {
+      max-height: 90vh;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+    
+    /* Slide 3: Lançamento do livro */
+    .book-launch {
+      padding: 40px 30px;
+      text-align: center;
+    }
+    
+    .book-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+    
+    .book-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      width: 280px;
+      transition: transform 0.3s ease;
+    }
+    
+    .book-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .book-card img {
+      width: 140px;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+      margin: 5vh auto 0 auto;
+    }
+    
+    .book-card .text {
+      padding: 20px;
+      text-align: left;
+    }
+    
+    .book-card .text h4 {
+      margin-bottom: 10px;
+      color: #6A1B9A;
+      font-size: 1.05em;
+    }
+    
+    .book-card .text p {
+      margin: 0;
+      color: #5a2c57;
+      font-size: 0.95em;
+    }
+    
+    /* Slide 4: Radiestesia Radiónica - Origem e História */
+    .flex-wrapper.experimento-slide {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      padding: 40px 30px;
+      gap: 30px;
+    }
+    
+    .flex-wrapper.experimento-slide .timeline {
+      order: 1;
+      flex: 1;
+    }
+    
+    .flex-wrapper.experimento-slide .illustration {
+      order: 2;
+      flex: 1;
+      text-align: center;
+    }
+    
+    .flex-wrapper.experimento-slide .illustration img {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Slide 7: Protocolo de Qualidade */
+    .slide-7-content {
+      padding: 40px 30px;
+    }
+    
+    .slide-7-columns {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .slide-7-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+    
+    .graph-container {
+      flex: 1;
+      border: 2px dashed #df8fe0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+    }
+    
+    .item-row {
+      display: flex;
+      align-items: center;
+    }
+    
+    .item-row img {
+      width: 80px;
+      max-width: 100%;
+      height: auto;
+      margin-right: 20px;
+    }
+    
+    .item-row p {
+      color: #6A1B9A;
+      font-weight: bold;
+      margin: 0;
+    }
+    
+    /* Slide 8: Pesquisas realizadas e orientações */
+    .content h2.title {
+      margin-top: 1vh;
+    }
+    
+    .mindmap-slide {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #fff7fa;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .mindmap-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .mindmap-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #ffd1eb;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+      z-index: 2;
+    }
+    
+    .mindmap-center .lightbulb {
+      font-size: 2rem;
+      display: block;
+    }
+    
+    .mindmap-center h2 {
+      margin-top: 10px;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #6A1B9A;
+    }
+    
+    .mindmap-box {
+      position: absolute;
+      width: 250px;
+      border: 2px solid #6A1B9A;
+      border-radius: 6px;
+      padding: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      font-size: 0.9rem;
+      background: #fff;
+      z-index: 2;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    
+    .mindmap-box h3 {
+      margin-bottom: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      text-align: center;
+    }
+    
+    .mindmap-box p {
+      display: none;
+    }
+    
+    .mindmap-box.expanded {
+      transform: scale(1.1);
+      z-index: 3;
+    }
+    
+    .mindmap-box.expanded p {
+      display: block;
+    }
+    
+    .mindmap-box.intro {
+      background: #ffdce5;
+      top: 12%;
+      left: 12%;
+    }
+    
+    .mindmap-box.prep {
+      background: #ffe5cc;
+      top: 12%;
+      right: 12%;
+    }
+    
+    .mindmap-box.brainstorm {
+      background: #dff9e4;
+      bottom: 12%;
+      left: 12%;
+    }
+    
+    .mindmap-box.priority {
+      background: #d8f8ff;
+      bottom: 12%;
+      right: 12%;
+    }
+    
+    .arrow {
+      position: absolute;
+      width: 2px;
+      background: #6A1B9A;
+      transform-origin: top center;
+      z-index: 1;
+    }
+    
+    .arrow::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid #6A1B9A;
+    }
+    
+    .arrow-intro {
+      top: 50%;
+      left: 50%;
+      height: 180px;
+      transform: translate(-50%, 0) rotate(225deg);
+    }
+    
+    .arrow-prep {
+      top: 50%;
+      left: 50%;
+      height: 180px;
+      transform: translate(-50%, 0) rotate(315deg);
+    }
+    
+    .arrow-brainstorm {
+      top: 50%;
+      left: 50%;
+      height: 180px;
+      transform: translate(-50%, 0) rotate(135deg);
+    }
+    
+    .arrow-priority {
+      top: 50%;
+      left: 50%;
+      height: 180px;
+      transform: translate(-50%, 0) rotate(45deg);
+    }
+    
+    @media (max-width: 768px) {
+      .cover-container {
+        flex-direction: column;
+        padding: 40px;
+      }
+    
+      .cover-content {
+        flex: 1;
+        margin-bottom: 20px;
+      }
+    
+      .cover-illustration img {
+        max-width: 300px;
+      }
+    
+      .mindmap-box {
+        width: 200px;
+      }
+    
+      .mindmap-center h2 {
+        font-size: 1.4rem;
+      }
+    
+      .arrow-intro,
+      .arrow-prep,
+      .arrow-brainstorm,
+      .arrow-priority {
+        height: 140px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Slide 0: Capa da Apresentação -->
+    <section class="active">
+      <div class="cover-container">
+        <div class="cover-content">
+          <h2 class="title">Minha relação com a<br>Moringa oleífera</h2>
+          <h4>Interação com a Radiestesia Radiónica como Terapia Energética</h4>
+          <p><strong>Duração:</strong> 1h40min</p>
+          <p><strong>Formato:</strong> Estrutura sequencial de slides com título e conteúdo detalhado</p>
+          <p><strong><u>Rejane</u> Mansur</strong></p>
+        </div>
+        <div class="cover-illustration">
+          <img src="https://i.ibb.co/fdvZBjVq/moringa1.png" alt="Capa Moringa oleífera">
+        </div>
+      </div>
+    </section>
+    
+    <!-- Slide 0: Mapa Mental Interativo -->
+    <section>
+      <div class="mindmap-slide">
+        <div class="mindmap-container">
+          <div class="mindmap-center">
+            <span class="lightbulb">💡</span>
+            <h2>MAPA MENTAL</h2>
+          </div>
+          <div class="mindmap-box intro">
+            <h3>INTRODUÇÃO</h3>
+            <p>Objetivo da reunião: gerar novas ideias para impulsionar o crescimento da empresa.</p>
+          </div>
+          <div class="mindmap-box prep">
+            <h3>PREPARAÇÃO</h3>
+            <p>Quais tendências de mercado, concorrentes e tecnologias podem ser explorados?</p>
+          </div>
+          <div class="mindmap-box brainstorm">
+            <h3>BRAINSTORM</h3>
+            <p>Liberdade de expressão, sem julgamentos; ideias podem ser complementadas ou combinadas.</p>
+          </div>
+          <div class="mindmap-box priority">
+            <h3>PRIORIZAÇÃO</h3>
+            <p>Definição das ideias mais promissoras e elaboração de um plano de ação para colocá-las em prática.</p>
+          </div>
+          <div class="arrow arrow-intro"></div>
+          <div class="arrow arrow-prep"></div>
+          <div class="arrow arrow-brainstorm"></div>
+          <div class="arrow arrow-priority"></div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Slide 1: Quem sou eu? -->
+    <section>
+      <div class="top-banner">
+        <img src="https://i.ibb.co/27zR5sQX/moringa2.png" alt="Pesquisadora em laboratório">
+      </div>
+      <div class="content">
+        <h2 class="title">Quem sou eu?</h2>
+        <div class="info-grid">
+          <div class="info-box">
+            <div class="icon">&#128100;</div>
+            <p><strong>Breve apresentação pessoal</strong></p>
+          </div>
+          <div class="info-box">
+            <div class="icon">&#127891;</div>
+            <p><strong>Formação acadêmica</strong></p>
+          </div>
+          <div class="info-box">
+            <div class="icon">&#127793;</div>
+            <p><strong>Conexão com a natureza e espiritualidade<br>desde a infância</strong></p>
+          </div>
+          <div class="info-box">
+            <div class="icon">&#128300;</div>
+            <p><strong>Caminho até se tornar pesquisador(a)<br>em plantas medicinais</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Slide 2: Minha vida profissional -->
+    <section>
+      <div class="flex-wrapper">
+        <div class="timeline">
+          <h2 class="title text-left">Minha vida profissional</h2>
+          <div class="timeline-item">
+            <div class="circle">1</div>
+            <div class="timeline-text">
+              <h4>Formação superior e pós-graduação</h4>
+              <p>Trajetória acadêmica e especialização em plantas medicinais</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="circle">2</div>
+            <div class="timeline-text">
+              <h4>Instituições pelas quais passou</h4>
+              <p>Experiências profissionais e contribuições em diferentes organizações</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="circle">3</div>
+            <div class="timeline-text">
+              <h4>Principais áreas de atuação</h4>
+              <p>Campos de pesquisa e especialização desenvolvidos ao longo da carreira</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="circle">4</div>
+            <div class="timeline-text">
+              <h4>Conexão entre pesquisa científica e saberes ancestrais</h4>
+              <p>Integração de conhecimentos tradicionais com metodologias científicas</p>
+            </div>
+          </div>
+        </div>
+        <div class="illustration">
+          <img src="https://i.ibb.co/pvwst3wr/moringa3.png" alt="Ilustração de pesquisador com plantas">
+        </div>
+      </div>
+    </section>
+    
+    <!-- Slide 3: Lançamento do livro -->
+    <section>
+      <div class="book-launch">
+        <h2 class="title">Lançamento do livro</h2>
+        <div class="book-cards">
+          <div class="book-card">
+            <img src="https://cdn.awsli.com.br/218/218563/produto/4836542973fa0251e1.jpg" alt="Capa do livro Moringa and Radiesthesia">
+            <div class="text">
+              <h4>Título e capa da obra</h4>
+              <p>Apresentação visual e título do livro publicado sobre a Moringa oleífera</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="https://www.livraria.ufs.br/wp-content/uploads/2018/04/capa-moringa-para-site.jpg" alt="Conteúdo do livro">
+            <div class="text">
+              <h4>Conteúdo abordado</h4>
+              <p>Principais temas e assuntos tratados na publicação</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="https://i.pinimg.com/236x/70/64/af/7064afdc7ecbba4466d0aa60bdb69ed7.jpg" alt="Leitora com livro da Moringa">
+            <div class="text">
+              <h4>Objetivo do livro e convite à leitura</h4>
+              <p>Propósito da obra e incentivo para que o público conheça seu conteúdo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Slide 4: Radiestesia Radiónica - Origem e História -->
+    <section>
+      <div class="flex-wrapper">
+        <div class="illustration">
+          <img src="https://vivvaterapias.com.br/wp-content/uploads/2024/10/person-conducting-reiki-therapy-scaled.jpg" alt="Imagem histórica sobre radiestesia">
+        </div>
+        <div class="timeline">
+          <h2 class="title text-left">Radiestesia Radiónica: origem e história</h2>
+          <div class="timeline-item">
+            <div class="circle">1</div>
+            <div class="timeline-text">
+              <h4>Origem da radiestesia: do Egito antigo aos padres franceses</h4>
+              <p>Raízes históricas e evolução da prática ao longo dos séculos</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="circle">2</div>
+            <div class="timeline-text">
+              <h4>Radiestesia x Radiestesia Radiónica</h4>
+              <p>Diferenças e relações entre as duas abordagens</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="circle">3</div>
+            <div class="timeline-text">
+              <h4>Contribuição de Abade Mermet, Abade Bouly e outros</h4>
+              <p>Figuras históricas importantes para o desenvolvimento da radiestesia</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="circle">4</div>
+            <div class="timeline-text">
+              <h4>Uso de gráficos radiónicos como tecnologia energética</h4>
+              <p>Aplicações práticas e evolução tecnológica dos gráficos radiónicos</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Slide 6: Experimento 4 -->
+    <section>
+      <div class="flex-wrapper experimento-slide">
+        <div class="timeline">
+          <h2 class="title text-left">Experimento 4</h2>
+          <div class="timeline-item">
+            <div class="circle">4</div>
+            <div class="timeline-text">
+              <h4>Gráficos radiónicos</h4>
+              <p>Alta vitalidade, Pirâmide plana, Turbilhão, SCAP</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="circle">108h</div>
+            <div class="timeline-text">
+              <h4>Tempo de exposição</h4>
+              <p>Período total de tratamento das sementes</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="circle">+45%</div>
+            <div class="timeline-text">
+              <h4>Aumento energético</h4>
+              <p>Elevação da energia vibracional das sementes</p>
+            </div>
+          </div>
+          <div class="timeline-text" style="margin-top: 30px;">
+            <p><strong>Objetivo:</strong> Avaliar sementes de Moringa expostas a gráficos radiónicos</p>
+            <p><strong>Resultado:</strong> Aumento significativo da energia vibracional das sementes após o tratamento com os gráficos radiónicos selecionados</p>
+          </div>
+        </div>
+        <div class="illustration">
+          <img src="https://cdn.awsli.com.br/2500x2500/1692/1692231/produto/96367249/6abc6c2de7.jpg" alt="Imagem do experimento com pêndulo e sementes">
+        </div>
+      </div>
+    </section>
+    
+    <!-- Slide 7: Protocolo de Qualidade -->
+    <section>
+      <div class="slide-7-content">
+        <h2 class="title text-left">Protocolo de qualidade (parte 1)</h2>
+        <div class="slide-7-columns">
+          <div class="slide-7-list">
+            <div class="item-row">
+              <img src="https://images.tcdn.com.br/img/img_prod/1002447/mix_de_sementes_150g_631_2_6d84bb802dfdc31c6543ea0317e5900d.jpg" alt="Ícone semente">
+              <p>Escolha das sementes</p>
+            </div>
+            <div class="item-row">
+              <img src="https://remasa.com.br/wp-content/uploads/2024/09/img_planejamento_e_producao_florestal_producao_de_mudas.jpg.webp" alt="Ícone muda">
+              <p>Produção e seleção de mudas</p>
+            </div>
+            <div class="item-row">
+              <img src="https://blog4.mfrural.com.br/wp-content/uploads/2020/01/Preparo-do-solo-2.jpg" alt="Ícone solo">
+              <p>Preparo do solo</p>
+            </div>
+            <div class="item-row">
+              <img src="https://www.cptcursospresenciais.com.br/blog/wp-content/uploads/2022/02/demanda-h%C3%ADdrica-artigo.jpg" alt="Ícone água">
+              <p>Irrigação e controle de água</p>
+            </div>
+            <div class="item-row">
+              <img src="https://www.astronomiapratica.com.br/wp-content/uploads/2019/03/Lua.jpg" alt="Ícone lua">
+              <p>Transplante e observação da lua</p>
+            </div>
+            <div class="item-row">
+              <img src="https://ciclovivo.com.br/wp-content/uploads/2018/01/iStock-671789588.jpg" alt="Ícone poda">
+              <p>Poda e tempo de recuperação da planta</p>
+            </div>
+          </div>
+          <div class="graph-container">
+            <!-- Espaço reservado para a inserção do gráfico -->
+            <p style="color:#aaa; text-align:center;">[Espaço para Gráfico]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Slide 8: Pesquisas realizadas e orientações -->
+    <section>
+      <div class="content">
+        <h2 class="title">Pesquisas realizadas e orientações</h2>
+        <div class="info-grid" style="flex-direction: column; align-items: center; gap: 20px;">
+          <div class="info-box" style="background-color: #e0f7f6; width: 100%; max-width: 800px; text-align: left;">
+            <p><strong>Projetos de pesquisa com a Moringa</strong></p>
+            <p>Investigações científicas conduzidas para explorar as propriedades e benefícios da Moringa oleífera</p>
+          </div>
+          <div class="info-box" style="background-color: #e0f7f6; width: 100%; max-width: 800px; text-align: left;">
+            <p><strong>Parcerias e laboratórios envolvidos</strong></p>
+            <p>Colaborações institucionais e infraestrutura utilizada para o desenvolvimento das pesquisas</p>
+          </div>
+          <div class="info-box" style="background-color: #e0f7f6; width: 100%; max-width: 800px; text-align: left;">
+            <p><strong>Alunos orientados (TCC, IC, mestrado)</strong></p>
+            <p>Orientação acadêmica em diferentes níveis, contribuindo para a formação de novos pesquisadores</p>
+          </div>
+          <div class="info-box" style="background-color: #e0f7f6; width: 100%; max-width: 800px; text-align: left;">
+            <p><strong>Principais resultados científicos</strong></p>
+            <p>Descobertas e avanços significativos obtidos através das pesquisas realizadas</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+  </main>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const slides = document.querySelectorAll("section");
+      let currentSlide = 0;
+      
+      function showSlide(index) {
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("active", i === index);
+        });
+      }
+      showSlide(currentSlide);
+      
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+          if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+          }
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+          if (currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+          }
+        }
+      });
+      
+      // Interatividade do Mapa Mental: alterna o estado "expanded" ao clicar nas caixas
+      const mindmapBoxes = document.querySelectorAll('.mindmap-box');
+      mindmapBoxes.forEach(box => {
+        box.addEventListener('click', (e) => {
+          e.stopPropagation();
+          box.classList.toggle('expanded');
+        });
+      });
+      
+      // Inserção automática do cabeçalho nos slides (exceto a capa)
+      const talkTitle = "Minha relação com a Moringa oleífera";
+      const speakerName = "Rejane Mansur";
+      
+      slides.forEach((slide, index) => {
+        if (index === 0) return; // Pula o slide da capa
+        const header = document.createElement("header");
+        header.classList.add("slide-header");
+        header.innerHTML = `
+          <h1 class="talk-title">${talkTitle}</h1>
+          <p class="speaker-name">${speakerName}</p>
+        `;
+        slide.insertBefore(header, slide.firstChild);
+      });
+    });
+  </script>
+</body>
+</html>
